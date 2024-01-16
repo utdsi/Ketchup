@@ -1,12 +1,12 @@
 
 
-const {Sequelize,DataTypes} = require("sequelize")
+const { Sequelize, DataTypes } = require("sequelize")
 
 
-const sequelize = new Sequelize("Flutter","root","Hello123",{
+const sequelize = new Sequelize("Flutter", "root", "Hello123", {
 
-    host : "localhost",
-    dialect : "mysql"
+    host: "localhost",
+    dialect: "mysql"
 })
 
-module.exports = {sequelize}
+module.exports = { sequelize }
