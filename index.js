@@ -32,7 +32,9 @@ app.use("/chat", chatRouter)
 app.listen(process.env.port, async () => {
 
     try {
-        await sequelize.sync()
+        
+        await sequelize.sync({ force: true });
+console.log("All models were synchronized successfully.");
         console.log("connected to db")
     } catch (error) {
         console.log(error)

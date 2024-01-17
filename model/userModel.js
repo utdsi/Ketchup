@@ -94,8 +94,8 @@ const UserModel = sequelize.define("users", {
     },
     profile_status: {
 
-        type: DataTypes.ENUM(0, 1, 2),
-        defaultValue: 1
+        type: DataTypes.ENUM("0", "1", "2"),
+        defaultValue: "1"
     }
 
 })
