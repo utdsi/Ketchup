@@ -30,3 +30,10 @@ User Profiles: Users can set up detailed profiles with photos and personal infor
 4. Continuous Improvement:
  -We value user feedback and constantly work on enhancing the app's features and security measures.
 Join our Flutter Dating App community and embark on a journey to find meaningful connections with like-minded individuals. Whether you're looking for companionship, friendship, or love, our app is designed to make your dating experience enjoyable and secure.
+
+## TechStack
+1. NodeJs
+2. ExpressJs
+3. MySql
+4. Hostinger for deploying
+5. Nodemailer
