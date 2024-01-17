@@ -33,7 +33,7 @@ app.listen(process.env.port, async () => {
 
     try {
         
-        await sequelize.sync({ force: true });
+        await sequelize.sync();
 console.log("All models were synchronized successfully.");
         console.log("connected to db")
     } catch (error) {
