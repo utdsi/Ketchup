@@ -232,7 +232,7 @@ const resetpassword = async (req, res) => {
 
         const user = await UserModel.findAll({ where: { email: email } })
 
-        if (!user) {
+        if (user.length==0) {
             res.status(200).send({ "status": 2, "message": "user not found", "data": [] })
         }
 
