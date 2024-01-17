@@ -48,8 +48,20 @@ const receivedrequest = async (req, res) => {
 
     const id = req.params.id
     try {
-        const request = await FriendModel.findAll({ where: { receiver_u_id: id } })
-        const usersWithoutPassword = request.map(user => omitPassword(user));
+        const request = await FriendModel.findAll({
+            where: { receiver_u_id: id },
+            attributes: ['sender_u_id'],
+            raw: true,
+            nest: true,
+            distinct: true,
+          });
+          const uniqueSenderIds = request.map(item => item.sender_u_id);
+          const friends = await UserModel.findAll({
+            where: {
+                User_Id: uniqueSenderIds,
+            },
+        });
+        const usersWithoutPassword = friends.map(user => omitPassword(user));
 
         res.status(200).send({ "status": 1, "message": "total request received", "data": usersWithoutPassword })
     } catch (error) {
