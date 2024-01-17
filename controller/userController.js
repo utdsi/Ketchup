@@ -57,14 +57,14 @@ const login = async (req, res) => {
                 res.status(400).send({ "status": 2, "message": err.message, "data": user })
             }
 
-            if(result){
+            if (result) {
                 var token = jwt.sign({ User_Id: user[0].User_Id }, process.env.secret_key);
 
-                res.status(200).send({ "status": 1, "message": "you have successfully logged in.", "token": token, "data":omitPassword(user[0])})
-            }else{
+                res.status(200).send({ "status": 1, "message": "you have successfully logged in.", "token": token, "data": omitPassword(user[0]) })
+            } else {
                 res.status(400).send({ "status": 2, "message": "Invalid password.", "data": omitPassword(user[0]) });
             }
-            
+
         });
 
     } catch (error) {
@@ -173,6 +173,12 @@ const editprofile = async (req, res) => {
 
 const resetpassword = async (req, res) => {
     const { email } = req.body
+
+    const user = await UserModel.findAll({ where: { email: email } })
+
+    if (user.length == 0) {
+        res.status(200).send({ "status": 2, "message": "user not found", "data": [] })
+    }
     function generateRandomAlphabetString(length) {
         let result = '';
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
@@ -230,15 +236,17 @@ const resetpassword = async (req, res) => {
 
     try {
 
-        const user = await UserModel.findAll({ where: { email: email } })
+        bcrypt.hash(randomAlphabetString, 6, async function (err, hash) {
+            // Store hash in your password DB.
+            if (err) {
+                res.status(400).send({ "status": 2, "message": "Some error occured, please try again.", "data": [] })
+            }
+            await UserModel.update({ password: hash }, { where: { email: email } })
 
-        if (user.length==0) {
-            res.status(200).send({ "status": 2, "message": "user not found", "data": [] })
-        }
+            res.status(200).send({ "status": 1, "message": "updated password has been sent to your email", "data": [] })
+        });
 
-        await UserModel.update({ password: randomAlphabetString }, { where: { email: email } })
 
-        res.status(200).send({ "status": 1, "message": "updated password has been sent to your email", "data": [] })
 
     } catch (error) {
         res.status(400).send({ "status": 2, "message": "Some error occured, please try again.", "data": [] })
@@ -247,10 +255,52 @@ const resetpassword = async (req, res) => {
 
 }
 
+//---------------------------------ChangePassword------------------------------------------
+
+const changePassword = async (req, res) => {
+
+
+    const { old_password, new_password, email } = req.body
+
+    try {
+
+        const user = await UserModel.findAll({ where: { email: email } })
+        bcrypt.compare(old_password, user[0].password, async function (err, result) {
+            if (err) {
+                res.status(400).send({ "status": 2, "message": err.message, "data": user })
+            }
+
+            if (result) {
+                bcrypt.hash(new_password, 6, async function (err, hash) {
+                    if (err) {
+                        res.status(400).send({ "status": 2, "message": "Some error occured, please try again.", "data": [] })
+                    }
+
+                    await UserModel.update({ password: hash }, { where: { email: email } })
+
+                    res.status(200).send({ "status": 1, "message": "your password has been updated", "data": [] })
+
+                });
+            } else {
+                res.status(400).send({ "status": 2, "message": "Incorrect password.", "data": omitPassword(user[0]) });
+            }
+
+        });
+
+
+
+    } catch (error) {
+        res.status(400).send({ "status": 2, "message": "Some error occured, please try again.", "data": [] })
+    }
+}
+
+
+//--------------------------------------------------------------------------------------------
+
 function omitPassword(user) {
     const { password, ...userWithoutPassword } = user.toJSON();
     return userWithoutPassword;
 }
 
 
-module.exports = { register, login, getallusers, getuserbyid, getuserbyFilter, editprofile, resetpassword }
+module.exports = { register, login, getallusers, getuserbyid, getuserbyFilter, editprofile, resetpassword, changePassword }
