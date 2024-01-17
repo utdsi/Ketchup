@@ -23,7 +23,7 @@ const FriendModel = sequelize.define("friends", {
 
     },
     fr_req_status: {
-        type: DataTypes.ENUM["Pending", "Accepted", "Decline"],
+        type: DataTypes.ENUM("Pending", "Accepted", "Decline"),
         defaultValue: "Pending"
     },
     created_at: {

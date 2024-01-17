@@ -33,7 +33,7 @@ const UserModel = sequelize.define("users", {
         defaultValue: null
     },
     gender: {
-        type: DataTypes.ENUM["Male", "Female", "Others"],
+        type: DataTypes.ENUM("Male", "Female", "Others"),
         defaultValue: null
     },
     dob: {
@@ -70,17 +70,18 @@ const UserModel = sequelize.define("users", {
         defaultValue: null
     },
     marital_status: {
-        type: DataTypes.ENUM['Single', 'Married', 'Divorced', 'Widowed', 'Separated'],
+        type: DataTypes.ENUM('Single', 'Married', 'Divorced', 'Widowed', 'Separated'),
         defaultValue: null
     },
     religion: {
-        type: DataTypes.ENUM['Christianity', 'Islam', 'Hinduism', 'Buddhism', 'Judaism', 'Other'],
+        type: DataTypes.ENUM('Christianity', 'Islam', 'Hinduism', 'Buddhism', 'Judaism', 'Other'),
         defaultValue: null
     },
     occupation: {
 
-        type: DataTypes.ENUM["InCollege", "Working", "Business", "SittingIdle"],
-        defaultValue: null
+        type: DataTypes.ENUM("InCollege", "Working", "Business", "SittingIdle"),
+        defaultValue: null,
+        
     },
     created_at: {
 
@@ -93,7 +94,7 @@ const UserModel = sequelize.define("users", {
     },
     profile_status: {
 
-        type: DataTypes.ENUM[0, 1, 2],
+        type: DataTypes.ENUM(0, 1, 2),
         defaultValue: 1
     }
 

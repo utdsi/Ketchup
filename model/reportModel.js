@@ -17,7 +17,7 @@ const ReportModel = sequelize.define("reports", {
         type: DataTypes.STRING
     },
     report_status: {
-        type: DataTypes.ENUM["resolved", "pending"],
+        type: DataTypes.ENUM("resolved", "pending"),
         defaultValue: "pending"
 
     },
