@@ -243,7 +243,10 @@ const resetpassword = async (req, res) => {
 
 }
 
-
+function omitPassword(user) {
+    const { password, ...userWithoutPassword } = user.toJSON();
+    return userWithoutPassword;
+}
 
 
 module.exports = { register, login, getallusers, getuserbyid, getuserbyFilter, editprofile, resetpassword }
