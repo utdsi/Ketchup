@@ -62,7 +62,7 @@ const login = async (req, res) => {
 
                 res.status(200).send({ "status": 1, "message": "you have successfully logged in.", "token": token, "data":omitPassword(user[0])})
             }else{
-                res.status(400).send({ "status": 2, "message": "Invalid password.", "data": omitPassword(user) });
+                res.status(400).send({ "status": 2, "message": "Invalid password.", "data": omitPassword(user[0]) });
             }
             
         });
@@ -79,7 +79,9 @@ const getallusers = async (req, res) => {
 
     try {
         const users = await UserModel.findAll()
-        res.status(200).send({ "status": 1, "message": "All users", "data": users })
+        const usersWithoutPassword = users.map(user => omitPassword(user));
+
+        res.status(200).send({ "status": 1, "message": "All users", "data": usersWithoutPassword })
 
     } catch (error) {
         res.status(400).send({ "status": 2, "message": "Some error occured, please try again.", "data": [] })
@@ -104,9 +106,10 @@ const getuserbyid = async (req, res) => {
             }],
             attributes: { exclude: ['password'] }
         });
+        const usersWithoutPassword = nonBlockedUsers.map(user => omitPassword(user));
 
 
-        res.status(200).send({ "status": 1, "message": "All users", "data": nonBlockedUsers })
+        res.status(200).send({ "status": 1, "message": "All users", "data": usersWithoutPassword })
     } catch (error) {
         res.status(400).send({ "status": 2, "message": "Some error occured, please try again.", "data": [] })
     }
@@ -138,8 +141,9 @@ const getuserbyFilter = async (req, res) => {
             }],
             attributes: { exclude: ['password'] }
         });
+        const usersWithoutPassword = users.map(user => omitPassword(user));
 
-        res.status(200).send({ "status": 1, "message": "Users filtered by location and age", "data": users });
+        res.status(200).send({ "status": 1, "message": "Users filtered by location and age", "data": usersWithoutPassword });
     } catch (error) {
         res.status(400).send({ "status": 2, "message": "Some error occurred, please try again.", "data": [] });
     }

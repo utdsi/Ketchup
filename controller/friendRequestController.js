@@ -49,7 +49,9 @@ const receivedrequest = async (req, res) => {
     const id = req.params.id
     try {
         const request = await FriendModel.findAll({ where: { receiver_u_id: id } })
-        res.status(200).send({ "status": 1, "message": "total request received", "data": request })
+        const usersWithoutPassword = request.map(user => omitPassword(user));
+
+        res.status(200).send({ "status": 1, "message": "total request received", "data": usersWithoutPassword })
     } catch (error) {
         res.status(400).send({ "status": 2, "message": "Some error occured, please try again.", "data": [] })
     }
@@ -95,14 +97,20 @@ const getallfriends = async (req, res) => {
         });
 
 
+        const usersWithoutPassword = friends.map(user => omitPassword(user));
 
 
-        res.status(200).send({ "status": 1, "message": "get friends list", "data": friends })
+        res.status(200).send({ "status": 1, "message": "get friends list", "data": usersWithoutPassword })
 
     } catch (error) {
         res.status(400).send({ "status": 2, "message": "Some error occured, please try again.", "data": [] })
     }
 
+}
+
+function omitPassword(user) {
+    const { password, ...userWithoutPassword } = user.toJSON();
+    return userWithoutPassword;
 }
 
 module.exports = { sendFriendRequest, updateRequest, receivedrequest, getallfriends }
