@@ -3,9 +3,9 @@
 const { Sequelize, DataTypes } = require("sequelize")
 
 
-const sequelize = new Sequelize("Flutter", "root", "Hello123", {
+const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
 
-    host: "localhost",
+    host: process.env.DB_HOST,
     dialect: "mysql"
 })
 
