@@ -52,13 +52,19 @@ const login = async (req, res) => {
         }
 
 
-        bcrypt.compare(password, user.password, function (err, result) {
+        bcrypt.compare(password, user[0].password, function (err, result) {
             if (err) {
                 res.status(400).send({ "status": 2, "message": err.message, "data": user })
             }
-            var token = jwt.sign({ User_Id: user.User_Id }, process.env.secret_key);
 
-            res.status(200).send({ "status": 1, "message": "you have successfully logged in.", "token": token, "data": user })
+            if(result){
+                var token = jwt.sign({ User_Id: user[0].User_Id }, process.env.secret_key);
+
+                res.status(200).send({ "status": 1, "message": "you have successfully logged in.", "token": token, "data":omitPassword(user[0])})
+            }else{
+                res.status(400).send({ "status": 2, "message": "Invalid password.", "data": omitPassword(user) });
+            }
+            
         });
 
     } catch (error) {
