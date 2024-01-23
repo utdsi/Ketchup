@@ -1,6 +1,6 @@
-# Flutter-Dating-App
+# Ketchup-Dating-App
 
-Welcome to our innovative Flutter Dating App, designed to redefine the way people connect and build meaningful relationships. This app is crafted with a user-centric approach, providing a seamless and enjoyable experience for those seeking companionship.
+Welcome to our innovative Ketchup Dating App, designed to redefine the way people connect and build meaningful relationships. This app is crafted with a user-centric approach, providing a seamless and enjoyable experience for those seeking companionship.
 
 ## Key Features:
 
