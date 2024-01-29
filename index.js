@@ -7,6 +7,7 @@ const app = express()
 
 app.use(express.json())
 app.use(cors())
+app.use(express.urlencoded({ extended: false }))
 
 
 const { sequelize } = require("./config/db")
@@ -32,9 +33,9 @@ app.use("/chat", chatRouter)
 app.listen(process.env.port, async () => {
 
     try {
-        
+
         await sequelize.sync();
-console.log("All models were synchronized successfully.");
+        console.log("All models were synchronized successfully.");
         console.log("connected to db")
     } catch (error) {
         console.log(error)

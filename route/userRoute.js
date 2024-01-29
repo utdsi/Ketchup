@@ -2,7 +2,7 @@
 const express = require("express")
 
 const userRouter = express.Router()
-const { register, login, getallusers, getuserbyid, getuserbyFilter, editprofile, resetpassword, changePassword } = require("../controller/userController")
+const { register, login, getallusers, getuserbyid, getuserbyFilter, editprofile, resetpassword, changePassword ,changeprofileimage} = require("../controller/userController")
 const { auth } = require("../middleware/auth")
 
 
@@ -14,6 +14,7 @@ userRouter.get("/userfilter/:id", auth, getuserbyFilter)
 userRouter.patch("/edituser/:id", auth, editprofile)
 userRouter.patch("/resetpassword", resetpassword)
 userRouter.patch("/changepassword",auth,changePassword)
+userRouter.patch("/changeprofileimage/:id",auth,changeprofileimage)
 
 
 module.exports = { userRouter }

@@ -5,9 +5,12 @@ const jwt = require("jsonwebtoken")
 const { uuid } = require("uuidv4")
 const nodemailer = require("nodemailer")
 const { Op } = require("sequelize")
+const fs = require("fs")
+const path = require("path")
 
 const { UserModel } = require("../model/userModel")
 const { BlockModel } = require("../model/blockModel")
+const { upload, storage } = require("../utils/multerImage")
 
 require("dotenv").config()
 
@@ -162,9 +165,39 @@ const editprofile = async (req, res) => {
         await UserModel.update(payload, { where: { User_Id: id } })
         res.status(200).send({ "status": 1, "message": "profile updated", "data": [] })
     } catch (error) {
-        res.status(400).send({ "status": 2, "message": "Some error occured, please try again.", "data": [] })
+        res.status(500).send({ "status": 2, "message": "Some error occured, please try again.", "data": [] })
     }
 
+}
+
+//---------------------------------------changeProfileImage------------------------------
+
+
+
+const changeprofileimage = async (req, res) => {
+
+    try {
+        const id = req.params.id
+        const file = req.file.path
+
+        upload.single('profile_pic')(req, res, async function (err) {
+            if (err instanceof multer.MulterError) {
+
+                res.status(400).send('Multer error: ' + err.message);
+            } else if (err) {
+
+                res.status(500).send('Unknown error: ' + err.message);
+            } else {
+                await UserModel.update({ profile_pic: file }, { where: { User_Id: id } })
+                res.status(200).send({ "status": 1, "message": "profile image updated", "data": [] })
+
+            }
+        });
+
+
+    } catch (error) {
+        res.status(500).send({ "status": 2, "message": "Some error occured, please try again.", "data": [] })
+    }
 }
 
 
@@ -194,7 +227,7 @@ const resetpassword = async (req, res) => {
 
     const randomAlphabetString = generateRandomAlphabetString(8);
     //---------------nodemailer-----------------------------------------------------------
-    
+
 
     const transporter = nodemailer.createTransport({
 
@@ -251,14 +284,14 @@ const resetpassword = async (req, res) => {
     } catch (error) {
         res.status(400).send({ "status": 2, "message": "Some error occured, please try again.", "data": [] })
     }
-    
+
 
 
     //---------------------------------------------------------------------------------
 
 
 
-    
+
 
 
 }
@@ -311,4 +344,4 @@ function omitPassword(user) {
 }
 
 
-module.exports = { register, login, getallusers, getuserbyid, getuserbyFilter, editprofile, resetpassword, changePassword }
+module.exports = { register, login, getallusers, getuserbyid, getuserbyFilter, editprofile, resetpassword, changePassword,changeprofileimage }
