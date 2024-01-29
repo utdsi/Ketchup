@@ -8,7 +8,7 @@ const { Op } = require("sequelize")
 const fs = require("fs")
 const path = require("path")
 const multer = require("multer")
-const uploadDir = '../uploads';
+const uploadDir = './uploads';
 
 const { UserModel } = require("../model/userModel")
 const { BlockModel } = require("../model/blockModel")
