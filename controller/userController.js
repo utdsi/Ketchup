@@ -8,6 +8,7 @@ const { Op } = require("sequelize")
 const fs = require("fs")
 const path = require("path")
 const multer = require("multer")
+const uploadDir = '../uploads';
 
 const { UserModel } = require("../model/userModel")
 const { BlockModel } = require("../model/blockModel")
@@ -179,7 +180,9 @@ const changeprofileimage = async (req, res) => {
 
     try {
         const id = req.params.id
-        
+        if (!fs.existsSync(uploadDir)) {
+            fs.mkdirSync(uploadDir);
+          }
 
         upload.single('profile_pic')(req, res, async function (err) {
             if (err instanceof multer.MulterError) {
