@@ -179,7 +179,7 @@ const changeprofileimage = async (req, res) => {
 
     try {
         const id = req.params.id
-        const file = req.file
+        const file = req.profile_pic
 
         res.send(file)
 
