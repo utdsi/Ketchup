@@ -179,23 +179,24 @@ const changeprofileimage = async (req, res) => {
 
     try {
         const id = req.params.id
-        const file = req.file
+        
 
-        res.send(file)
+        upload.single('profile_pic')(req, res, async function (err) {
+            if (err instanceof multer.MulterError) {
 
-        // upload.single('profile_pic')(req, res, async function (err) {
-        //     if (err instanceof multer.MulterError) {
+                res.status(400).send('Multer error: ' + err.message);
+            } else if (err) {
 
-        //         res.status(400).send('Multer error: ' + err.message);
-        //     } else if (err) {
+                res.status(500).send('Unknown error: ' + err.message);
+            } else {
+                const file = req.file
 
-        //         res.status(500).send('Unknown error: ' + err.message);
-        //     } else {
-        //         await UserModel.update({ profile_pic: file }, { where: { User_Id: id } })
-        //         res.status(200).send({ "status": 1, "message": "profile image updated", "data": [] })
+                res.send({"mesg":file})
+                // await UserModel.update({ profile_pic: file }, { where: { User_Id: id } })
+                // res.status(200).send({ "status": 1, "message": "profile image updated", "data": [] })
 
-        //     }
-        // });
+            }
+        });
 
 
     } catch (error) {
