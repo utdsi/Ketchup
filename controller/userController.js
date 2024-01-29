@@ -197,7 +197,8 @@ const changeprofileimage = async (req, res) => {
 
 
     } catch (error) {
-        res.status(500).send({ "status": 2, "message": "Some error occured, please try again.", "data": [] })
+        //res.status(500).send({ "status": 2, "message": "Some error occured, please try again.", "data": [] })
+        res.send(error.message)
     }
 }
 
