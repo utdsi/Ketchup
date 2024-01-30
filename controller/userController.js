@@ -182,7 +182,7 @@ const changeprofileimage = async (req, res) => {
         const id = req.params.id
         if (!fs.existsSync(uploadDir)) {
             fs.mkdirSync(uploadDir);
-          }
+        }
 
         upload.single('profile_pic')(req, res, async function (err) {
             if (err instanceof multer.MulterError) {
@@ -192,19 +192,19 @@ const changeprofileimage = async (req, res) => {
 
                 res.status(500).send('Unknown error: ' + err.message);
             } else {
-                const file = req.file
+                const file = req.file.filename
 
-                res.send({"mesg":file})
-                // await UserModel.update({ profile_pic: file }, { where: { User_Id: id } })
-                // res.status(200).send({ "status": 1, "message": "profile image updated", "data": [] })
+
+                await UserModel.update({ profile_pic: file }, { where: { User_Id: id } })
+                res.status(200).send({ "status": 1, "message": "profile image updated", "data": [] })
 
             }
         });
 
 
     } catch (error) {
-        //res.status(500).send({ "status": 2, "message": "Some error occured, please try again.", "data": [] })
-        res.send(error.message)
+        res.status(500).send({ "status": 2, "message": "Some error occured, please try again.", "data": [] })
+
     }
 }
 
@@ -352,4 +352,4 @@ function omitPassword(user) {
 }
 
 
-module.exports = { register, login, getallusers, getuserbyid, getuserbyFilter, editprofile, resetpassword, changePassword,changeprofileimage }
+module.exports = { register, login, getallusers, getuserbyid, getuserbyFilter, editprofile, resetpassword, changePassword, changeprofileimage }
