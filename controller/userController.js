@@ -13,6 +13,7 @@ const uploadDir = './uploads';
 const { UserModel } = require("../model/userModel")
 const { BlockModel } = require("../model/blockModel")
 const { upload, storage } = require("../utils/multerImage")
+const {baseUrl} = require("../utils/baseUrl")
 
 require("dotenv").config()
 
@@ -192,10 +193,12 @@ const changeprofileimage = async (req, res) => {
 
                 res.status(500).send('Unknown error: ' + err.message);
             } else {
+
                 const file = req.file.filename
+                const filePath = path.join("https://node.dxschduler.com/", `${file}`);
 
 
-                await UserModel.update({ profile_pic: file }, { where: { User_Id: id } })
+                await UserModel.update({ profile_pic: filePath }, { where: { User_Id: id } })
                 res.status(200).send({ "status": 1, "message": "profile image updated", "data": [] })
 
             }
